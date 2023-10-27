@@ -1,5 +1,6 @@
 import os
 import json
+from datetime import datetime
 
 load = os.path.join("../js/operations.json")
 
@@ -10,26 +11,19 @@ def info_client(filename):
         return info
 
 
-def mask_card(num_card: str) -> str:
-    """Функция принимает номер карты, маскирует его и
-    возвращает замаскированный номер с отступами после 4 символов."""
-    num_list = list(num_card)
-    masks_card = []
-    for num in num_list:
-        if len(masks_card) < 6:
-            masks_card.append(num)
-        elif 6 <= len(masks_card) < 12:
-            masks_card.append("*")
-        else:
-            masks_card.append(num)
-    return (
-        f'{"".join(masks_card[0:4])} {"".join(masks_card[4:8])} '
-        f'{"".join(masks_card[8:12])} {"".join(masks_card[12:])}'
-    )
+def get_operations_executed(data):
+    operations_executed = []
+    for operation in data:
+        if 'state' in operation and operation['state'] == 'EXECUTED':
+            operations_executed.append(operation)
+    operations_with_list = []
+    for operation in operations_executed:
+        if 'from' in operations_executed:
+            if 'from' in operation:
+                operations_with_list.append(operation)
+    return operations_with_list
 
 
-def score_mask(num_score: str) -> str:
-    """Функция принимает номер счета и возвращает последние 4 цифры номера счета."""
-    score_list = list(num_score)
-    return f'**{"".join(score_list[-4:])}'
-
+def get_last_five_operations(operation_with_list):
+    sort_operations = sorted(operation_with_list, key=lambda operation: operation['data'], reverse=True)
+    last_five_operations = sort_operations[0:5]
