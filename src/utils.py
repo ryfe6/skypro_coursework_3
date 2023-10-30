@@ -2,7 +2,7 @@ import os
 import json
 from datetime import datetime
 
-load_info = os.path.join("js/operations.json")
+load_info = os.path.join("../js/operations.json")
 
 
 def info_operation(filename: json) -> list:
